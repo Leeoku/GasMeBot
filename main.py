@@ -12,12 +12,15 @@ soup = BeautifulSoup(page.text, 'html.parser')
 #oldPrice = soup.findAll("",{"id":"lPrice2"})
 #oldPrice = soup.findAll("",{"class":"gasPrice"})
 
-def main(url):
+def main():
+    url = get_url()
     response = requests.get(url)
     content = response.content.decode("utf8")
-    telegram_url = "https://api.telegram.org/bot{}/sendMessage?chat_id=690011658&text={}".format(token,final_text)
     return content
 
+def get_url():
+    telegram_url = "https://api.telegram.org/bot{}/sendMessage?chat_id=690011658&text={}".format(token,final_text)
+    return telegram_url
 
 def priceCompare():
     oldPrice = float(soup.find("",{"id":"lPrice2"}).text)
@@ -45,11 +48,11 @@ def priceCompare():
 final_text = priceCompare()
 
 if __name__ == '__main__':
-    telegram_url = "https://api.telegram.org/bot{}/sendMessage?chat_id=690011658&text={}".format(token,final_text)
-    main(telegram_url)
+    main()
 
-""" updater = Updater(token) #define updater
-    dp = updater.dispatcher #define dispatcher
+""" updater = Updater(token)
+    #get dispatcher
+    dp = updater.dispatcher 
     dp.add_handler(CommandHandler('gasme',priceCompare))
     updater.start_polling()
-    updater.idle()"""
+    updater.idle() """
