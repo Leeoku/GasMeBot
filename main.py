@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler
 import os,logging, requests, json
 token = "639358022:AAHtST1qHa5OZRG7O4-Du4X5IZBflLaY-DQ"
-
 url = "http://stockr.net/Toronto/GasPrice.aspx"
 page = requests.get(url)
 soup = BeautifulSoup(page.text, 'html.parser')
@@ -32,22 +31,22 @@ def main():
     #print(url)
 
 def start(update,context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    #context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    update.message.reply_text('Hi!')
 
 def get_url():
     telegram_url = "https://api.telegram.org/bot{}/sendMessage?chat_id=690011658&text={}".format(token,final_text)
     return telegram_url
 
 def priceCompare():
-    oldPrice = (soup.find("",{"id":"lPrice2"}).text)
+    oldPrice = float(soup.find("",{"id":"lPrice2"}).text)
     oldDate = soup.find("",{"id":"lDate2"}).text
     #Check to see if newPrice is updated yet
     newPrice = (soup.find("",{"id":"lPrice1"}).text)
     if newPrice == "&nbsp" or newPrice == "\xa0":
         newPrice = 0
-        print("NO VALUE")
     else:
-        newPrice = float(newPrice)    
+        newPrice = float(newPrice)   
     newDate = soup.find("",{"id":"lDate1"}).text
     difference = abs(float(newPrice)-float(oldPrice))
     text = ""
@@ -57,25 +56,24 @@ def priceCompare():
     elif difference > 10:
         text = "This value doesn't seem right"
         return text
+    elif newPrice == oldPrice:
+        text = "No change."
+        return text
     elif newPrice > oldPrice:
         text= "Tomorrow's price will increase by " + str(difference) + "¢"
         return text
     elif newPrice < oldPrice:
         text = "Tomorrow's price will decrease by " + str(difference) + "¢"
         return text
-    elif newPrice == oldPrice:
-        text = "No change."
-        return text
 
-final_text = priceCompare()
+def gasme():
+    #context.bot.send _message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+    update.message.reply_text('GASSSS')
+#final_text = priceCompare()
+
+def error(update,context):
+    #logs errors
+    logger.warning('Update "&s" caused error "&s"', update,context.error)
 
 if __name__ == '__main__':
     main()
-    
-
-""" updater = Updater(token)
-    #get dispatcher
-    dp = updater.dispatcher 
-    dp.add_handler(CommandHandler('gasme',priceCompare))
-    updater.start_polling()
-    updater.idle() """
