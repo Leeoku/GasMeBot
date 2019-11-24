@@ -20,7 +20,8 @@ def main():
     #dp.add_handler(CommandHandler("start",start))
     start_handler = CommandHandler("start",start)
     dp.add_handler(start_handler)
-    dp.add_handler(CommandHandler("gasme",priceCompare))
+    gas_handler = CommandHandler("gasme",priceCompare)
+    dp.add_handler(gas_handler)
     updater.start_polling()
     updater.idle()
     url = get_url()
@@ -66,7 +67,7 @@ def priceCompare():
         text = "Tomorrow's price will decrease by " + str(difference) + "¢"
         return text
 
-def gasme():
+def gasme(update,context):
     #context.bot.send _message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
     update.message.reply_text('GASSSS')
 #final_text = priceCompare()
