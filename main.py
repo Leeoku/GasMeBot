@@ -49,27 +49,21 @@ def priceCompare():
     text = ""
     if newPrice == "" or newPrice == "&nbsp;":
         text="No update yet"
-        return text
     elif difference > 10:
         text = "This value doesn't seem right"
-        return text
     elif newPrice == oldPrice:
         text = "No change."
-        return text
     elif newPrice > oldPrice:
         text= "Tomorrow's price will increase by " + str(difference) + "¢"
-        return text
     elif newPrice < oldPrice:
         text = "Tomorrow's price will decrease by " + str(difference) + "¢"
-        return text
     else:
         text = "Input error"
-        return text
+    return text
 def gasme(update,context):
     # This command calls the priceCompare function
     final_text = priceCompare()
     update.message.reply_text(final_text)
-#final_text = priceCompare()
 
 def error(update,context):
     #logs errors
