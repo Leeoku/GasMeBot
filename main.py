@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 from telegram.ext import Updater, CommandHandler, MessageHandler, ConversationHandler
 import os,logging, requests, json
-token = "639358022:AAHtST1qHa5OZRG7O4-Du4X5IZBflLaY-DQ"
+token = ""
 url = "http://stockr.net/Toronto/GasPrice.aspx"
 page = requests.get(url)
 soup = BeautifulSoup(page.text, 'html.parser')
